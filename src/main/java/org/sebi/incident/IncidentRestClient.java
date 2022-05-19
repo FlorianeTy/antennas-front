@@ -8,6 +8,7 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
+import java.util.Arrays;
 import java.util.List;
 
 @Path("/rest")
@@ -18,13 +19,13 @@ public interface IncidentRestClient {
     @Fallback(DefaultIncident.class)
     List<Incident> getIncidents(@QueryParam("api_key") String apiKey);
 
-    class DefaultIncident implements FallbackHandler<Incident> {
+    class DefaultIncident implements FallbackHandler<List<Incident>> {
 
         @Override
-        public Incident handle(ExecutionContext executionContext) {
+        public List<Incident> handle(ExecutionContext executionContext) {
             Incident i = new Incident();
             i.description = "fallback";
-            return i;
+            return Arrays.asList(i);
         }
     }
 }
